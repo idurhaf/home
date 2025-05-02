@@ -15,12 +15,21 @@ jobs:
       with:
         python-version: '3.10'
 
+    - name: Cache pip
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
     - name: Install dependencies
       run: |
         pip install playwright requests python-dotenv pytz
         playwright install chromium
 
     - name: Jalankan Script
+      continue-on-error: true
       env:
         userid: ${{ secrets.USERID }}
         pw: ${{ secrets.PW }}
@@ -28,10 +37,17 @@ jobs:
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
       run: python main.py
 
+    - name: Jalankan Multi Script
+      env:
+        userid: ${{ secrets.USERID }}
+        pw: ${{ secrets.PW }}
+        TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+      run: python multi.py
+
     - name: Set WIB time
       id: set_wib_time
       run: |
-        # ambil waktu sekarang (UTC) lalu tambah 7 jam
         TIME_WIB=$(date -u --date='+7 hours' '+%Y-%m-%d %H:%M:%S')
         echo "time_wib=$TIME_WIB" >> $GITHUB_OUTPUT
 
