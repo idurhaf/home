@@ -151,8 +151,8 @@ def main():
             parts = baris.strip().split('|')
             if len(parts) != 6:
                 continue
-            situs, userid, bet_raw, bet_raw2 = parts
-            run(playwright, situs.strip(), userid.strip(), bet_raw.strip(), bet_raw2.strip(), bet_raw2.strip(), bet_raw2.strip())
+            situs, userid, bet_raw, bet_raw2, bet_raw3, bet_raw4, = parts
+            run(playwright, situs.strip(), userid.strip(), bet_raw.strip(), bet_raw2.strip(), bet_raw3.strip(), bet_raw4.strip())
 
 if __name__ == "__main__":
     main()
