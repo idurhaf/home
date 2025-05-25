@@ -55,14 +55,12 @@ def parse_saldo(saldo_text: str) -> float:
     saldo_text = saldo_text.replace("Rp.", "").replace("Rp", "").strip().replace(",", "")
     return float(saldo_text)
 
-def run(playwright: Playwright, situs: str, userid: str, bet_raw: str, bet_raw2: str, config_csv: str):
+def run(playwright: Playwright, situs: str, userid: str, bet_2d: str, bet_3d: str, bet_4d: str, config_csv: str):
     wib = get_wib()
     try:
         nomor_kombinasi = baca_multi_config(config_csv)
-        bet_kali = float(bet_raw)
-        bet_kali2 = float(bet_raw2)
         jumlah_kombinasi = len(nomor_kombinasi.split('*'))
-        bet_per_nomor = (bet_kali + bet_kali2) * 1000
+        bet_per_nomor = (float(bet_2d) + float(bet_3d) + float(bet_4d)) * 1000
         total_bet_rupiah = jumlah_kombinasi * bet_per_nomor
 
         log_status("🌐", f"Login ke situs {situs} dengan userid {userid}...")
@@ -124,12 +122,19 @@ def run(playwright: Playwright, situs: str, userid: str, bet_raw: str, bet_raw2:
 
         log_status("✍️", "Mengisi form betting...")
         page1.locator("#numinput").fill(nomor_kombinasi)
+
         input3d = page1.locator("input#buy3d")
         input3d.fill("")
-        input3d.type(str(bet_raw), delay=80)
+        input3d.type(str(bet_3d), delay=80)
+
         input4d = page1.locator("input#buy4d")
         input4d.fill("")
-        input4d.type(str(bet_raw2), delay=80)
+        input4d.type(str(bet_4d), delay=80)
+
+        input2d = page1.locator("input#buy2d")
+        input2d.fill("")
+        input2d.type(str(bet_2d), delay=80)
+
         page1.locator("button.jq-bet-submit").click()
 
         log_status("⏳", "Menunggu konfirmasi betting...")
@@ -175,10 +180,10 @@ def main():
             if '|' not in baris or baris.strip().startswith("#"):
                 continue
             parts = baris.strip().split('|')
-            if len(parts) < 5:
+            if len(parts) < 6:
                 continue
-            situs, userid, bet_raw, bet_raw2, config_csv = parts
-            run(playwright, situs.strip(), userid.strip(), bet_raw.strip(), bet_raw2.strip(), config_csv.strip())
+            situs, userid, bet_2d, bet_3d, bet_4d, config_csv = parts
+            run(playwright, situs.strip(), userid.strip(), bet_2d.strip(), bet_3d.strip(), bet_4d.strip(), config_csv.strip())
 
 if __name__ == "__main__":
     main()
