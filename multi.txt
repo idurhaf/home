@@ -1,5 +1,5 @@
 # situs|userid|bet2D|bet3D|bet4D|angka
 # wdbos.net|mayalisa|0|0.2|0.0|isi2d,angka3d
 # wdbos.net|kakayubi|0|1|0.0|isi2d,angka3d
-# wdbos39652.com|gusnier|0|0.3|0.0|angka3d
-# tvtoto.net|gusnitv|0.0|2|0|isi2d,angka3d
+wdbos39652.com|gusnier|0|0.3|0.0|angka3d
+tvtoto.net|gusnitv|0.0|1.5|0|isi2d,angka3d
